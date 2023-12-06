@@ -3,10 +3,15 @@ import React, { useState } from "react";
 import { useSidebar } from "./contexts/SidebarProvider";
 import { MenuIcon, Plus, X } from "lucide-react";
 import AddQuestionDialog from "./modals/add-question";
+import useFetchQuestions from "./hooks/getQuestions";
 
 const SideBar = () => {
   const { toggle, setToggle, activeQuestion, setActiveQuestion } = useSidebar();
   const [openDialog, setOpenDialog] = useState(false);
+
+  const questions = useFetchQuestions();
+
+  if (questions.isLoading) return null;
 
   if (!toggle)
     return (
@@ -47,26 +52,24 @@ const SideBar = () => {
             <Plus className="mr-2 w-4 h-4" />
             <span className="">Add Question</span>
           </button>
-          {Array(20)
-            .fill([])
-            .map((_, index) => {
-              const isActive = activeQuestion === index;
-              const activeClass = isActive
-                ? "bg-blue-600 text-white"
-                : "hover:bg-slate-100";
-              return (
-                <li key={index}>
-                  <button
-                    type="button"
-                    disabled={isActive}
-                    onClick={() => setActiveQuestion(index)}
-                    className={`${activeClass} text-left w-full p-2 rounded-md`}
-                  >
-                    Question {index + 1}.
-                  </button>
-                </li>
-              );
-            })}
+          {questions?.data?.map((_, index) => {
+            const isActive = activeQuestion === index;
+            const activeClass = isActive
+              ? "bg-blue-600 text-white"
+              : "hover:bg-slate-100";
+            return (
+              <li key={index}>
+                <button
+                  type="button"
+                  disabled={isActive}
+                  onClick={() => setActiveQuestion(index)}
+                  className={`${activeClass} text-left w-full p-2 rounded-md`}
+                >
+                  Question {index + 1}.
+                </button>
+              </li>
+            );
+          })}
         </ul>
       </section>
     </>

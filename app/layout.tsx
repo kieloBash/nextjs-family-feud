@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import SideBar from "@/components/sidebar";
 import SidebarProvider from "@/components/contexts/SidebarProvider";
+import { QueryProvider } from "@/components/providers/QueryProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,10 +22,12 @@ export default function RootLayout({
       <body
         className={`${inter.className} flex min-h-screen w-screen relative`}
       >
-        <SidebarProvider>
-          <SideBar />
-          {children}
-        </SidebarProvider>
+        <QueryProvider>
+          <SidebarProvider>
+            <SideBar />
+            {children}
+          </SidebarProvider>
+        </QueryProvider>
       </body>
     </html>
   );

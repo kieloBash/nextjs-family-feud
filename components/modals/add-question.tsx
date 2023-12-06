@@ -14,7 +14,9 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { AnswerType } from "@/lib/interface/answer";
-import { Plus, X } from "lucide-react";
+import { Loader2, Plus, X } from "lucide-react";
+import { createNewQuestion } from "@/lib/actions/question.action";
+import { useQueryClient } from "@tanstack/react-query";
 
 const AddQuestionDialog = ({
   open,
@@ -27,10 +29,27 @@ const AddQuestionDialog = ({
   const [currAnswer, setCurrAnswer] = useState("");
   const [currScore, setCurrScore] = useState<number | undefined>();
 
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const queryClient = useQueryClient();
+
   async function handleSubmit() {
     if (answers.length === 0) return null;
+    setIsLoading(true);
 
-    console.log(answers);
+    const res = await createNewQuestion({ answers });
+
+    if (res.success) {
+      setIsLoading(false);
+      setOpen(false);
+      setAnswers([]);
+      setCurrAnswer("");
+      setCurrScore(undefined);
+
+      queryClient.invalidateQueries({
+        queryKey: [`questions`],
+      });
+    }
   }
 
   return (
@@ -114,8 +133,9 @@ const AddQuestionDialog = ({
           </Button>
         </div>
         <DialogFooter>
-          <Button type="button" onClick={handleSubmit}>
-            Confirm
+          <Button disabled={isLoading} type="button" onClick={handleSubmit}>
+            Confirm{" "}
+            {isLoading && <Loader2 className="w-5 h-5 animate-spin ml-2" />}
           </Button>
         </DialogFooter>
       </DialogContent>
