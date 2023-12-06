@@ -1,10 +1,10 @@
 "use client";
 import React from "react";
 import { useSidebar } from "./contexts/SidebarProvider";
-import { MenuIcon, X } from "lucide-react";
+import { MenuIcon, Plus, X } from "lucide-react";
 
 const SideBar = () => {
-  const { toggle, setToggle } = useSidebar();
+  const { toggle, setToggle, activeQuestion, setActiveQuestion } = useSidebar();
 
   if (!toggle)
     return (
@@ -19,7 +19,7 @@ const SideBar = () => {
       </button>
     );
   return (
-    <section className="h-full w-60 border-r p-2 fixed z-100 bg-white">
+    <section className="h-full w-60 border-r p-4 fixed z-100 bg-white flex flex-col">
       <button
         type="button"
         onClick={() => {
@@ -29,7 +29,37 @@ const SideBar = () => {
       >
         <X />
       </button>
-      SideBar
+      <h1 className="font-bold text-xl">Mercado Feud</h1>
+      <ul className="w-full mt-4 overflow-y-auto">
+        <button
+          type="button"
+          onClick={() => {}}
+          className={`mb-2 flex justify-center items-center hover:bg-slate-100 text-center w-full p-2 rounded-md`}
+        >
+          <Plus className="mr-2 w-4 h-4" />
+          <span className="">Add Question</span>
+        </button>
+        {Array(20)
+          .fill([])
+          .map((_, index) => {
+            const isActive = activeQuestion === index;
+            const activeClass = isActive
+              ? "bg-blue-600 text-white"
+              : "hover:bg-slate-100";
+            return (
+              <li key={index}>
+                <button
+                  type="button"
+                  disabled={isActive}
+                  onClick={() => setActiveQuestion(index)}
+                  className={`${activeClass} text-left w-full p-2 rounded-md`}
+                >
+                  Question {index + 1}.
+                </button>
+              </li>
+            );
+          })}
+      </ul>
     </section>
   );
 };
