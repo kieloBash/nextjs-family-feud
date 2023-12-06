@@ -52,8 +52,8 @@ const SideBar = () => {
             <Plus className="mr-2 w-4 h-4" />
             <span className="">Add Question</span>
           </button>
-          {questions?.data?.map((_, index) => {
-            const isActive = activeQuestion === index;
+          {questions?.data?.map((q, index) => {
+            const isActive = activeQuestion && activeQuestion._id === q._id;
             const activeClass = isActive
               ? "bg-blue-600 text-white"
               : "hover:bg-slate-100";
@@ -61,8 +61,8 @@ const SideBar = () => {
               <li key={index}>
                 <button
                   type="button"
-                  disabled={isActive}
-                  onClick={() => setActiveQuestion(index)}
+                  disabled={isActive || false}
+                  onClick={() => setActiveQuestion(q)}
                   className={`${activeClass} text-left w-full p-2 rounded-md`}
                 >
                   Question {index + 1}.

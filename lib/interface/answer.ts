@@ -3,5 +3,6 @@ export interface AnswerType {
   score: number;
 }
 export interface QuestionType {
+  _id: string;
   answers: AnswerType[];
 }
