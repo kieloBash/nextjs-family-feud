@@ -29,7 +29,7 @@ const Display = () => {
   return (
     <section className="flex-1 flex flex-col justify-start items-center">
       <div className="w-full h-40 flex justify-center items-center">
-        <p className="text-4xl text-center font-medium">
+        <p className="lg:text-4xl text-lg text-center font-medium">
           {activeQuestion?.question}
         </p>
       </div>
