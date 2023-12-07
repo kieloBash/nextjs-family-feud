@@ -1,11 +1,15 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Poppins } from "next/font/google";
 import "./globals.css";
 import SideBar from "@/components/sidebar";
 import SidebarProvider from "@/components/contexts/SidebarProvider";
 import { QueryProvider } from "@/components/providers/QueryProvider";
 
 const inter = Inter({ subsets: ["latin"] });
+const poppins = Poppins({
+  subsets: ["latin"],
+  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+});
 
 export const metadata: Metadata = {
   title: "Mercado Feud",
@@ -20,7 +24,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${inter.className} flex min-h-screen w-screen relative`}
+        className={`${poppins.className} flex min-h-screen w-screen relative`}
       >
         <QueryProvider>
           <SidebarProvider>

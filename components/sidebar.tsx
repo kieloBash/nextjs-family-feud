@@ -1,17 +1,16 @@
 "use client";
 import React, { useState } from "react";
 import { useSidebar } from "./contexts/SidebarProvider";
-import { MenuIcon, Plus, X } from "lucide-react";
+import { Loader2, MenuIcon, Plus, X } from "lucide-react";
 import AddQuestionDialog from "./modals/add-question";
 import useFetchQuestions from "./hooks/getQuestions";
+import { Skeleton } from "./ui/skeleton";
 
 const SideBar = () => {
   const { toggle, setToggle, activeQuestion, setActiveQuestion } = useSidebar();
   const [openDialog, setOpenDialog] = useState(false);
 
   const questions = useFetchQuestions();
-
-  if (questions.isLoading) return null;
 
   if (!toggle)
     return (
@@ -25,6 +24,7 @@ const SideBar = () => {
         <MenuIcon />
       </button>
     );
+
   return (
     <>
       <section className="h-full w-60 border-r p-4 fixed z-100 bg-white flex flex-col">
@@ -41,36 +41,59 @@ const SideBar = () => {
           <X />
         </button>
         <h1 className="font-bold text-xl">Mercado Feud</h1>
-        <ul className="w-full mt-4 overflow-y-auto">
-          <button
-            type="button"
-            onClick={() => {
-              setOpenDialog(true);
-            }}
-            className={`mb-2 flex justify-center items-center hover:bg-slate-100 text-center w-full p-2 rounded-md`}
-          >
-            <Plus className="mr-2 w-4 h-4" />
-            <span className="">Add Question</span>
-          </button>
-          {questions?.data?.map((q, index) => {
-            const isActive = activeQuestion && activeQuestion._id === q._id;
-            const activeClass = isActive
-              ? "bg-blue-600 text-white"
-              : "hover:bg-slate-100";
-            return (
-              <li key={index}>
-                <button
-                  type="button"
-                  disabled={isActive || false}
-                  onClick={() => setActiveQuestion(q)}
-                  className={`${activeClass} text-left w-full p-2 rounded-md`}
-                >
-                  Question {index + 1}.
-                </button>
-              </li>
-            );
-          })}
-        </ul>
+        {questions.isLoading ? (
+          <>
+            <ul className="w-full mt-4 overflow-y-auto">
+              {Array(5)
+                .fill([])
+                .map((_, index) => {
+                  return (
+                    <Skeleton
+                      key={index}
+                      className="w-full h-10 p-2 mt-2"
+                    ></Skeleton>
+                  );
+                })}
+            </ul>
+            <li className="text-center flex justify-center items-center gap-2 mt-4">
+              <span className="">Loading</span>
+              <Loader2 className="w-5 h-5 animate-spin" />
+            </li>
+          </>
+        ) : (
+          <>
+            <ul className="w-full mt-4 overflow-y-auto">
+              <button
+                type="button"
+                onClick={() => {
+                  setOpenDialog(true);
+                }}
+                className={`mb-2 flex justify-center items-center hover:bg-slate-100 text-center w-full p-2 rounded-md`}
+              >
+                <Plus className="mr-2 w-4 h-4" />
+                <span className="">Add Question</span>
+              </button>
+              {questions?.data?.map((q, index) => {
+                const isActive = activeQuestion && activeQuestion._id === q._id;
+                const activeClass = isActive
+                  ? "bg-blue-600 text-white"
+                  : "hover:bg-slate-100";
+                return (
+                  <li key={index}>
+                    <button
+                      type="button"
+                      disabled={isActive || false}
+                      onClick={() => setActiveQuestion(q)}
+                      className={`${activeClass} text-left w-full p-2 rounded-md`}
+                    >
+                      Question {index + 1}.
+                    </button>
+                  </li>
+                );
+              })}
+            </ul>
+          </>
+        )}
       </section>
     </>
   );
