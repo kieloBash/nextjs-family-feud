@@ -12,7 +12,7 @@ export async function fetchQuestions() {
     const query = Question.find({})
       .sort({ createdAt: "desc" })
       .lean()
-      .select("_id answers")
+      .select("_id answers question")
       .exec();
 
     const totalCount = await Question.countDocuments({});
@@ -39,8 +39,10 @@ export async function fetchQuestions() {
 
 export async function createNewQuestion({
   answers,
+  question,
 }: {
   answers: AnswerType[];
+  question: string;
 }) {
   try {
     connectDB();
@@ -48,11 +50,10 @@ export async function createNewQuestion({
     console.log(answers);
     const created = await Question.create({
       answers,
+      question,
     });
 
     console.log(created);
-
-
 
     return {
       message: "Successfully Created New Question",

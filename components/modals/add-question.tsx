@@ -14,7 +14,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { AnswerType } from "@/lib/interface/answer";
-import { Loader2, Plus, X } from "lucide-react";
+import { Loader2, Plus } from "lucide-react";
 import { createNewQuestion } from "@/lib/actions/question.action";
 import { useQueryClient } from "@tanstack/react-query";
 
@@ -27,6 +27,7 @@ const AddQuestionDialog = ({
 }) => {
   const [answers, setAnswers] = useState<AnswerType[]>([]);
   const [currAnswer, setCurrAnswer] = useState("");
+  const [question, setQuestion] = useState("");
   const [currScore, setCurrScore] = useState<number | undefined>();
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -34,10 +35,12 @@ const AddQuestionDialog = ({
   const queryClient = useQueryClient();
 
   async function handleSubmit() {
-    if (answers.length === 0) return null;
+    if (answers.length === 0 && !question) return null;
+    const sortedAnswers = [...answers]; // Create a copy of the array to avoid mutating the original state
+    sortedAnswers.sort((a, b) => b.score - a.score);
     setIsLoading(true);
 
-    const res = await createNewQuestion({ answers });
+    const res = await createNewQuestion({ answers: sortedAnswers, question });
 
     if (res.success) {
       setIsLoading(false);
@@ -62,6 +65,21 @@ const AddQuestionDialog = ({
             corresponding scores.
           </DialogDescription>
         </DialogHeader>
+
+        <div className="grid grid-cols-4 items-center gap-4">
+          <Label htmlFor="question" className="text-right">
+            Question:
+          </Label>
+          <textarea
+            value={question}
+            onChange={(e) => setQuestion(e.target.value)}
+            placeholder="Enter the question..."
+            id="question"
+            rows={1}
+            className="col-span-3 p-2 text-sm outline-none border rounded-md"
+          />
+        </div>
+
         <div className="grid grid-cols-5 grid-flow-row">
           <div className="col-span-2 flex flex-col gap-1.5">
             <Label className="text-left mb-2">List of answers</Label>

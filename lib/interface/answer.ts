@@ -4,5 +4,6 @@ export interface AnswerType {
 }
 export interface QuestionType {
   _id: string;
+  question: string;
   answers: AnswerType[];
 }

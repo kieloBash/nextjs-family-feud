@@ -17,7 +17,7 @@ const SideBar = () => {
       <button
         type="button"
         onClick={() => {
-          setToggle(!toggle);
+          setToggle(true);
         }}
         className="fixed flex justify-center items-center rounded-md top-4 left-2 w-10 h-10 p-1 transition hover:bg-slate-100"
       >
@@ -34,7 +34,7 @@ const SideBar = () => {
         <button
           type="button"
           onClick={() => {
-            setToggle(!toggle);
+            setToggle(false);
           }}
           className="absolute flex justify-center items-center rounded-md top-4 right-2 w-10 h-10 p-1 transition hover:bg-slate-100"
         >

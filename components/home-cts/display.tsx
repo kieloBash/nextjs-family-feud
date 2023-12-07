@@ -16,6 +16,7 @@ const Display = () => {
 
   return (
     <div>
+      <p className="">{activeQuestion?.question}</p>
       {activeQuestion?.answers.map((a, index) => {
         return (
           <li className="" key={index}>
