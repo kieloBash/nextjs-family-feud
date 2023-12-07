@@ -5,6 +5,7 @@ import { Loader2, MenuIcon, Plus, X } from "lucide-react";
 import AddQuestionDialog from "./modals/add-question";
 import useFetchQuestions from "./hooks/getQuestions";
 import { Skeleton } from "./ui/skeleton";
+import Link from "next/link";
 
 const SideBar = () => {
   const { toggle, setToggle, activeQuestion, setActiveQuestion } = useSidebar();
@@ -79,16 +80,18 @@ const SideBar = () => {
                   ? "bg-blue-600 text-white"
                   : "hover:bg-slate-100";
                 return (
-                  <li key={index}>
-                    <button
-                      type="button"
-                      disabled={isActive || false}
-                      onClick={() => setActiveQuestion(q)}
-                      className={`${activeClass} text-left w-full p-2 rounded-md`}
-                    >
-                      Question {index + 1}.
-                    </button>
-                  </li>
+                  <Link key={index} href={`/${q._id}`}>
+                    <li>
+                      <button
+                        type="button"
+                        disabled={isActive || false}
+                        onClick={() => setActiveQuestion(q)}
+                        className={`${activeClass} text-left w-full p-2 rounded-md`}
+                      >
+                        Question {index + 1}.
+                      </button>
+                    </li>
+                  </Link>
                 );
               })}
             </ul>

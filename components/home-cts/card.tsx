@@ -23,7 +23,7 @@ const AnswerCard = ({
   return (
     <div
       onClick={() => handleSetShown(index)}
-      className="bg-blue-600 p-4 rounded-md flex justify-center items-center border-4 border-black"
+      className="cursor-pointer bg-blue-600 p-4 rounded-md flex justify-center items-center border-4 border-black"
     >
       {shown ? (
         <div className="w-full flex justify-between items-center text-2xl text-white font-bold">
