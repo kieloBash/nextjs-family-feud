@@ -1,17 +1,36 @@
 "use client";
 import React, { useState } from "react";
 import { useSidebar } from "./contexts/SidebarProvider";
-import { Loader2, MenuIcon, Plus, X } from "lucide-react";
+import { Loader2, MenuIcon, Plus, Trash, X } from "lucide-react";
 import AddQuestionDialog from "./modals/add-question";
 import useFetchQuestions from "./hooks/getQuestions";
 import { Skeleton } from "./ui/skeleton";
-import Link from "next/link";
+import { Button } from "./ui/button";
+import { useRouter } from "next/navigation";
+import { deleteQuestion } from "@/lib/actions/question.action";
+import { useQueryClient } from "@tanstack/react-query";
 
 const SideBar = () => {
   const { toggle, setToggle, activeQuestion, setActiveQuestion } = useSidebar();
   const [openDialog, setOpenDialog] = useState(false);
 
   const questions = useFetchQuestions();
+  const router = useRouter();
+  const queryClient = useQueryClient();
+
+  async function handleDelete(_id: string) {
+    const res = await deleteQuestion({ _id });
+
+    if (res.success) {
+      queryClient.invalidateQueries({
+        queryKey: [`questions`],
+      });
+      if (_id === activeQuestion?._id) {
+        setActiveQuestion(null);
+        router.replace("/");
+      }
+    }
+  }
 
   if (!toggle)
     return (
@@ -80,18 +99,30 @@ const SideBar = () => {
                   ? "bg-blue-600 text-white"
                   : "hover:bg-slate-100";
                 return (
-                  <Link key={index} href={`/${q._id}`}>
-                    <li>
-                      <button
-                        type="button"
-                        disabled={isActive || false}
-                        onClick={() => setActiveQuestion(q)}
-                        className={`${activeClass} text-left w-full p-2 rounded-md`}
-                      >
-                        Question {index + 1}.
-                      </button>
-                    </li>
-                  </Link>
+                  <div
+                    key={index}
+                    className={`${activeClass} text-left w-full rounded-md flex justify-between items-center`}
+                  >
+                    <button
+                      type="button"
+                      onClick={() => {
+                        router;
+                        setActiveQuestion(q);
+                        router.push(`/${q._id}`);
+                      }}
+                      className="flex-1 p-2 text-left"
+                    >
+                      <span>Question {index + 1}.</span>
+                    </button>
+                    <Button
+                      type="button"
+                      variant={"ghost"}
+                      className="w-6 h-6 p-1 rounded-full"
+                      onClick={() => handleDelete(q._id)}
+                    >
+                      <Trash className="w-full h-full" />
+                    </Button>
+                  </div>
                 );
               })}
             </ul>

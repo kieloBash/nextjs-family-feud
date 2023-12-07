@@ -63,3 +63,21 @@ export async function createNewQuestion({
     throw new Error(`Error creating new question: ${error.message}`);
   }
 }
+
+export async function deleteQuestion({ _id }: { _id: string }) {
+  try {
+    connectDB();
+
+    console.log(_id);
+    const created = await Question.findByIdAndDelete(_id);
+
+    console.log(created);
+
+    return {
+      message: "Successfully deleted Question",
+      success: true,
+    };
+  } catch (error: any) {
+    throw new Error(`Error deleting question: ${error.message}`);
+  }
+}

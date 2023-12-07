@@ -131,6 +131,7 @@ const AddQuestionDialog = ({
 
         <div className="w-full flex justify-end">
           <Button
+          disabled={answers.length >= 8}
             onClick={() => {
               if (currAnswer && currScore) {
                 if (currScore > 0) {

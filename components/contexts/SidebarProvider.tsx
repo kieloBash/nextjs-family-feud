@@ -6,14 +6,14 @@ export type SidebarContextType = {
   toggle: boolean;
   setToggle: (temp: boolean) => void;
   activeQuestion: QuestionType | null;
-  setActiveQuestion: (temp: QuestionType) => void;
+  setActiveQuestion: (temp: QuestionType | null) => void;
 };
 
 export const SidebarContext = React.createContext<SidebarContextType>({
   toggle: false,
   setToggle: (index: boolean) => {},
   activeQuestion: null,
-  setActiveQuestion: (index: QuestionType) => {},
+  setActiveQuestion: (index: QuestionType | null) => {},
 });
 
 export const useSidebar = () => React.useContext(SidebarContext);
