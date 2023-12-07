@@ -3,6 +3,13 @@ import React, { useState } from "react";
 import { useSidebar } from "../contexts/SidebarProvider";
 import AnswerCard from "./card";
 
+import { Anton } from "next/font/google";
+
+const anton = Anton({
+  subsets: ["latin"],
+  weight: ["400"],
+});
+
 const Display = () => {
   const { activeQuestion } = useSidebar();
 
@@ -17,19 +24,12 @@ const Display = () => {
     false,
   ]);
 
-  if (!activeQuestion)
-    return (
-      <section className="flex-1 flex justify-center items-center">
-        <h1 className="font-black text-blue-600 lg:text-8xl sm:text-4xl text-center">
-          Mercado <br /> Feud
-        </h1>
-      </section>
-    );
+  if (!activeQuestion) return null;
 
   return (
-    <section className="flex-1 flex flex-col justify-start items-center">
+    <section className="col-span-4 flex flex-col justify-start items-center text-white">
       <div className="w-full h-40 flex justify-center items-center">
-        <p className="lg:text-4xl text-lg text-center font-medium">
+        <p className={`${anton.className} lg:text-5xl text-lg text-center font-medium`}>
           {activeQuestion?.question}
         </p>
       </div>

@@ -9,6 +9,7 @@ import { Button } from "./ui/button";
 import { useRouter } from "next/navigation";
 import { deleteQuestion } from "@/lib/actions/question.action";
 import { useQueryClient } from "@tanstack/react-query";
+import Link from "next/link";
 
 const SideBar = () => {
   const { toggle, setToggle, activeQuestion, setActiveQuestion } = useSidebar();
@@ -39,9 +40,9 @@ const SideBar = () => {
         onClick={() => {
           setToggle(true);
         }}
-        className="fixed flex justify-center items-center rounded-md top-4 left-2 w-10 h-10 p-1 transition hover:bg-slate-100"
+        className="fixed flex justify-center items-center rounded-md top-4 left-2 w-10 h-10 p-1 transition"
       >
-        <MenuIcon />
+        <MenuIcon className="w-full h-full text-white hover:text-slate-200 transition" />
       </button>
     );
 
@@ -60,7 +61,9 @@ const SideBar = () => {
         >
           <X />
         </button>
-        <h1 className="font-bold text-xl">Mercado Feud</h1>
+        <Link href={"/"}>
+          <h1 className="font-bold text-xl">Mercado Feud</h1>
+        </Link>
         {questions.isLoading ? (
           <>
             <ul className="w-full mt-4 overflow-y-auto">
