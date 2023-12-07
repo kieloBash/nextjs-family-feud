@@ -1,9 +1,21 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { useSidebar } from "../contexts/SidebarProvider";
+import AnswerCard from "./card";
 
 const Display = () => {
   const { activeQuestion } = useSidebar();
+
+  const [shownArr, setShownArr] = useState([
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+  ]);
 
   if (!activeQuestion)
     return (
@@ -15,16 +27,60 @@ const Display = () => {
     );
 
   return (
-    <div>
-      <p className="">{activeQuestion?.question}</p>
-      {activeQuestion?.answers.map((a, index) => {
-        return (
-          <li className="" key={index}>
-            {a.answer} | {a.score.toLocaleString()}
-          </li>
-        );
-      })}
-    </div>
+    <section className="flex-1 flex flex-col justify-start items-center">
+      <div className="w-full h-40 flex justify-center items-center">
+        <p className="text-4xl text-center font-medium">
+          {activeQuestion?.question}
+        </p>
+      </div>
+      <div className="grid grid-cols-2 max-w-2xl w-full flex-1 shadow-lg gap-1">
+        <div className="grid grid-rows-4 grid-cols-1 gap-1">
+          {Array(4)
+            .fill([0, 1, 2, 3])
+            .map((arr, index) => {
+              let blank = false;
+              if (activeQuestion.answers.length <= arr[index]) blank = true;
+
+              return (
+                <AnswerCard
+                  key={index}
+                  index={arr[index]}
+                  blank={blank}
+                  shown={shownArr[arr[index]]}
+                  answer={activeQuestion.answers[arr[index]]}
+                  handleSetShown={(b: number) => {
+                    const arr = [...shownArr];
+                    arr[b] = true;
+                    setShownArr(arr);
+                  }}
+                />
+              );
+            })}
+        </div>
+        <div className="grid grid-rows-4 grid-cols-1 gap-1">
+          {Array(4)
+            .fill([4, 5, 6, 7])
+            .map((arr, index) => {
+              let blank = false;
+              if (activeQuestion.answers.length <= arr[index]) blank = true;
+              return (
+                <AnswerCard
+                  key={index}
+                  index={arr[index]}
+                  blank={blank}
+                  shown={shownArr[arr[index]]}
+                  answer={activeQuestion.answers[arr[index]]}
+                  handleSetShown={(b: number) => {
+                    const arr = [...shownArr];
+                    arr[b] = true;
+                    setShownArr(arr);
+                  }}
+                />
+              );
+            })}
+        </div>
+      </div>
+    </section>
   );
 };
 
