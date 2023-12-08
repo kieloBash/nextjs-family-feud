@@ -61,7 +61,7 @@ const SideBar = () => {
         >
           <X />
         </button>
-        <Link href={"/"}>
+        <Link href={"/"} onClick={() => setActiveQuestion(null)}>
           <h1 className="font-bold text-xl">Mercado Feud</h1>
         </Link>
         {questions.isLoading ? (
