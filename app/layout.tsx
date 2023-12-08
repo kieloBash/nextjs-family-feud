@@ -4,6 +4,7 @@ import "./globals.css";
 import SideBar from "@/components/sidebar";
 import SidebarProvider from "@/components/contexts/SidebarProvider";
 import { QueryProvider } from "@/components/providers/QueryProvider";
+import GameProvider from "@/components/contexts/GameProvider";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -27,8 +28,10 @@ export default function RootLayout({
       >
         <QueryProvider>
           <SidebarProvider>
-            <SideBar />
-            {children}
+            <GameProvider>
+              <SideBar />
+              {children}
+            </GameProvider>
           </SidebarProvider>
         </QueryProvider>
       </body>

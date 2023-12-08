@@ -1,9 +1,10 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import AnswerCard from "./card";
 
 import { Anton } from "next/font/google";
 import { QuestionType } from "@/lib/interface/answer";
+import { useGame } from "../contexts/GameProvider";
 
 const anton = Anton({
   subsets: ["latin"],
@@ -11,6 +12,8 @@ const anton = Anton({
 });
 
 const Display = ({ data }: { data: QuestionType }) => {
+  const { setTurn, handleScore, turn, handleResetMistake } = useGame();
+
   const [shownArr, setShownArr] = useState([
     false,
     false,
@@ -21,6 +24,11 @@ const Display = ({ data }: { data: QuestionType }) => {
     false,
     false,
   ]);
+
+  useEffect(() => {
+    setTurn(null);
+    handleResetMistake();
+  }, []);
 
   return (
     <section className="col-span-4 flex flex-col justify-start items-center text-white">
@@ -47,9 +55,12 @@ const Display = ({ data }: { data: QuestionType }) => {
                   shown={shownArr[arr[index]]}
                   answer={data.answers[arr[index]]}
                   handleSetShown={(b: number) => {
-                    const arr = [...shownArr];
-                    arr[b] = true;
-                    setShownArr(arr);
+                    if (turn !== null) {
+                      const temp = [...shownArr];
+                      temp[b] = true;
+                      setShownArr(temp);
+                      handleScore(data.answers[arr[index]].score);
+                    }
                   }}
                 />
               );
@@ -69,9 +80,12 @@ const Display = ({ data }: { data: QuestionType }) => {
                   shown={shownArr[arr[index]]}
                   answer={data.answers[arr[index]]}
                   handleSetShown={(b: number) => {
-                    const arr = [...shownArr];
-                    arr[b] = true;
-                    setShownArr(arr);
+                    if (turn !== null) {
+                      const temp = [...shownArr];
+                      temp[b] = true;
+                      setShownArr(temp);
+                      handleScore(data.answers[arr[index]].score);
+                    }
                   }}
                 />
               );
