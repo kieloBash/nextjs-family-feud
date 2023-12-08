@@ -6,7 +6,7 @@ import AddQuestionDialog from "./modals/add-question";
 import useFetchQuestions from "./hooks/getQuestions";
 import { Skeleton } from "./ui/skeleton";
 import { Button } from "./ui/button";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { deleteQuestion } from "@/lib/actions/question.action";
 import { useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
@@ -14,6 +14,8 @@ import Link from "next/link";
 const SideBar = () => {
   const { toggle, setToggle, activeQuestion, setActiveQuestion } = useSidebar();
   const [openDialog, setOpenDialog] = useState(false);
+
+  const pathname = usePathname();
 
   const questions = useFetchQuestions();
   const router = useRouter();
@@ -97,7 +99,9 @@ const SideBar = () => {
                 <span className="">Add Question</span>
               </button>
               {questions?.data?.map((q, index) => {
-                const isActive = activeQuestion && activeQuestion._id === q._id;
+                const isActive =
+                  (pathname.includes(q._id) && q._id.length > 1) ||
+                  pathname === q._id;
                 const activeClass = isActive
                   ? "bg-blue-600 text-white"
                   : "hover:bg-slate-100";
