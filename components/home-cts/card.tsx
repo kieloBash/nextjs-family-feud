@@ -17,22 +17,22 @@ const AnswerCard = ({
 }) => {
   if (blank)
     return (
-      <div className="bg-blue-600 p-2 rounded-md flex justify-center items-center border-4 border-black"></div>
+      <div className="bg-gradient-to-r from-amber-200 to-yellow-400 p-2 rounded-md flex justify-center items-center border-4 border-black"></div>
     );
 
   return (
     <div
       onClick={() => handleSetShown(index)}
-      className="cursor-pointer bg-blue-600 p-1 lg:p-4 rounded-md flex justify-center items-center border-4 border-black"
+      className="cursor-pointer bg-gradient-to-r from-amber-200 to-yellow-400 p-1 lg:p-4 rounded-md flex justify-center items-center border-4 border-black"
     >
       {shown ? (
-        <div className="w-full flex justify-between items-center text-sm lg:text-2xl text-white font-bold">
+        <div className="w-full flex justify-between items-center text-sm lg:text-2xl text-black font-bold">
           <h4 className="flex-1 flex flex-wrap">{answer.answer}</h4>
-          <p className="">{answer.score}</p>
+          <p className="text-4xl font-extrabold">{answer.score}</p>
         </div>
       ) : (
         <>
-          <span className="text-white w-10 h-10 text-center text-3xl border border-black font-black flex justify-center items-center bg-blue-800 rounded-full">
+          <span className="text-white w-10 h-10 text-center text-3xl border border-black font-black flex justify-center items-center bg-yellow-800 rounded-full">
             {index + 1}
           </span>
         </>
