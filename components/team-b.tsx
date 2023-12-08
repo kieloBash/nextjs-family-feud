@@ -22,7 +22,7 @@ const TeamBComponent = () => {
           </Button>
         </div>
       )}
-      {teamB.getMistakes() === 3 && (
+      {teamB.getMistakes() === 3 && turn === "TurnB" && (
         <div className="flex mb-4 justify-end">
           <Button variant={"secondary"} onClick={handleResetMistake}>
             Reset
