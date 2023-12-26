@@ -42,6 +42,7 @@ const SingleQuestionPage = async ({
   searchParams: { [key: string]: string | string[] | undefined };
 }) => {
   const { questionId } = params;
+  // console.log(questionId);
   const single = await fetchSingleQuestion(questionId as string);
 
   if (!single.success) return null;
